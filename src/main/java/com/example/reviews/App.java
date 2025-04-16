@@ -5,6 +5,7 @@ import com.opencsv.bean.CsvToBeanBuilder;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -152,8 +153,13 @@ public class App {
 
 
     public static List<String> getHomeProductIdsUnder100(List<Review> reviews) {
-        //TODO - you need to implement this using a functional approach!
-        return new ArrayList<String>();                             // Final list of productIds
+        return reviews.stream() 
+            .filter(r ->"Home".equalsIgnoreCase(r.getCategory()) )  
+            .filter(r-> r.getPrice() < 100)
+            .sorted(Comparator.comparingDouble(Review::getPrice)) 
+            .map(Review::getProductId)
+  
+            .collect(Collectors.toList());                         // Final list of productIds
     }
 
     
